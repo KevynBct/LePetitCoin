@@ -1,6 +1,5 @@
 package com.example.kevyn.projet;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,7 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -30,24 +29,53 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Element> resultListe;
+    private AdapterElement adapter;
+    private ListView list;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        resultListe = new ArrayList<Element>();
+        adapter = new AdapterElement(this, resultListe);
+        list = (ListView) findViewById(R.id.resultList);
+        list.setAdapter(adapter);
+
+        spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayList<Integer> spinnerList = new ArrayList<Integer>();
+        spinnerList.add(5);
+        spinnerList.add(10);
+        spinnerList.add(50);
+        ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_item, spinnerList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
 
     }
 
     public void searchButtonClick(View v){
-        resultListe = new ArrayList<Element>();
         EditText    editText = (EditText) findViewById(R.id.searchBar);
         String      adresseRequest = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00170/Toilettes_publiques_nm_STBL/content?filter={\"COMMUNE\":{\"$eq\":\""+editText.getText()+"\"}}";
 
+        this.doRequest(adresseRequest);
+
+        adapter.notifyDataSetChanged();
+    }
+
+    public void mapButtonClick(View v) throws GooglePlayServicesNotAvailableException, GooglePlayServicesRepairableException {
+        int PLACE_PICKER_REQUEST = 1;
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+        startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+    }
+
+    public void doRequest(String _adresseRequest){
+        resultListe.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest =
                 new StringRequest(
-                        Request.Method.GET,adresseRequest,
+                        Request.Method.GET,_adresseRequest,
                         new Response.Listener<String>() {
                             public void onResponse(String response) {
                                 try {
@@ -68,15 +96,5 @@ public class MainActivity extends AppCompatActivity {
                             }}
                 ){};
         queue.add(stringRequest);
-
-        ListView lv = (ListView) findViewById(R.id.resultList);
-        lv.setAdapter(new AdapterElement(this, resultListe));
-    }
-
-    public void mapButtonClick(View v) throws GooglePlayServicesNotAvailableException, GooglePlayServicesRepairableException {
-        int PLACE_PICKER_REQUEST = 1;
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-        startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
     }
 }

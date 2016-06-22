@@ -7,7 +7,6 @@ public class Element {
     private String commune;
     private String adresse;
     private String position;
-    private float lng;
     private String horaires;
 
     public Element(String _commune, String _adresse, String _position, String _horaires){

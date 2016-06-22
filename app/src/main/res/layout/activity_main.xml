@@ -14,17 +14,25 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_above="@+id/resultList"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/searchButton" />
+        android:layout_toEndOf="@+id/searchBar" />
 
     <Button
-        android:id="@+id/searchButton"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
+        android:id="@+id/searchButton"
         android:layout_above="@+id/resultList"
-        android:layout_alignEnd="@+id/resultList"
+        android:layout_alignStart="@+id/mapButton"
         android:onClick="searchButtonClick"/>
 
     <Button
@@ -42,7 +50,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/resultList"
         android:layout_below="@+id/searchBar"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/mapButton" />
+        android:layout_alignEnd="@+id/mapButton" />
 
 </RelativeLayout>
