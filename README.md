@@ -1,6 +1,6 @@
-# projet_android
+# Projet Android
 
-# A faire
+## A faire
 
 ### Amélioration requête de sélection
 - Si textView vide -> rechercher les toilettes proches
