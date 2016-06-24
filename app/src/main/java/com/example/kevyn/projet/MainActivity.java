@@ -1,6 +1,8 @@
 package com.example.kevyn.projet;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,13 +24,17 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Element> resultList;
@@ -45,7 +51,28 @@ public class MainActivity extends AppCompatActivity {
         resultList = new ArrayList<Element>();
         adapter = new AdapterElement(this, resultList);
         list = (ListView) findViewById(R.id.resultList);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> liste, View v, int position, long id) {
+                Element elem = (Element) liste.getItemAtPosition(position);
+                int PLACE_PICKER_REQUEST = 1;
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//                LatLng northEast = new LatLng(elem.getLat()+0.001, elem.getLng()-0.001);
+//                LatLng southWest = new LatLng(elem.getLat()-0.001, elem.getLng()+0.001);
+                LatLng northEast = new LatLng(elem.getLat(), elem.getLng());
+                LatLng southWest = new LatLng(elem.getLat(), elem.getLng());
+                builder.setLatLngBounds(new LatLngBounds(northEast, southWest));
+                try {
+                    startActivityForResult(builder.build(getApplicationContext()), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         list.setAdapter(adapter);
+
 
         // Spinner
         spinner = (Spinner) findViewById(R.id.spinner);
@@ -59,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                doRequest(createAdresseRequest());
+                try {
+                    doRequest(createAdresseRequest());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 adapter.notifyDataSetChanged();
             }
 
@@ -69,15 +100,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void searchButtonClick(View v){
-        this.doRequest(this.createAdresseRequest());
+    public void searchButtonClick(View v) throws IOException {
+        this.doRequest(createAdresseRequest());
         adapter.notifyDataSetChanged();
     }
 
     public void mapButtonClick(View v) throws GooglePlayServicesNotAvailableException, GooglePlayServicesRepairableException {
         int PLACE_PICKER_REQUEST = 1;
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        startActivityForResult(builder.build(getApplicationContext()), PLACE_PICKER_REQUEST);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -90,11 +121,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String createAdresseRequest(){
+    public String createAdresseRequest() throws IOException {
         EditText    editText = (EditText) findViewById(R.id.searchBar);
         String result = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00170/Toilettes_publiques_nm_STBL/content";
 
-        if(editText.getText().length() != 0) result += "?filter={\"COMMUNE\":{\"$eq\":\""+editText.getText()+"\"}}";
+        if(editText.getText().length() != 0){
+            Geocoder geocoder = new Geocoder(getApplicationContext());
+            List<Address> address;
+            address = geocoder.getFromLocationName(editText.getText().toString(),5);
+            if (address == null) {
+                return result;
+            }
+            Address location = address.get(0);
+            result += "?filter={\"_l\":{\"$near\":["+Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude())+"]}}";
+        }
 
 
         return result;
