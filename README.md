@@ -4,6 +4,9 @@
 
 ### Amélioration requête de sélection
 - Si textView vide -> rechercher les toilettes proches
+
+> http://stackoverflow.com/questions/2227292/how-to-get-latitude-and-longitude-of-the-mobile-device-in-android
+
 - Faire recherches proches de l'adresse saisie
 
 > import android.location.Geocoder -> geocoder.getFromLocationName(... , ...);
