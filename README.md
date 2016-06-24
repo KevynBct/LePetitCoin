@@ -5,7 +5,7 @@
 ### Amélioration requête de sélection
 - Si textView vide -> rechercher les toilettes proches
 - Faire recherches proches de l'adresse saisie
-    > import android.location.Geocoder -> geocoder.getFromLocationName(... , ...);
+> import android.location.Geocoder -> geocoder.getFromLocationName(... , ...);
 
 ### Classement des résultats par distance
 - https://developer.android.com/reference/android/location/Location.html#distanceBetween%28double,%20double,%20double,%20double,%20float[]%29
