@@ -2082,9 +2082,10 @@ containing a value of this type.
         public static final int mr_ic_play_light=0x7f02008c;
         public static final int mr_ic_settings_dark=0x7f02008d;
         public static final int mr_ic_settings_light=0x7f02008e;
-        public static final int notification_template_icon_bg=0x7f020091;
+        public static final int notification_template_icon_bg=0x7f020092;
         public static final int powered_by_google_dark=0x7f02008f;
         public static final int powered_by_google_light=0x7f020090;
+        public static final int splash_image=0x7f020091;
     }
     public static final class id {
         public static final int action0=0x7f0d007d;
@@ -2276,7 +2277,8 @@ containing a value of this type.
         public static final int select_dialog_item_material=0x7f040026;
         public static final int select_dialog_multichoice_material=0x7f040027;
         public static final int select_dialog_singlechoice_material=0x7f040028;
-        public static final int support_simple_spinner_dropdown_item=0x7f040029;
+        public static final int splash=0x7f040029;
+        public static final int support_simple_spinner_dropdown_item=0x7f04002a;
     }
     public static final class mipmap {
         public static final int ic_launcher=0x7f030000;

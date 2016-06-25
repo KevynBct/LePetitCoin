@@ -57,11 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 Element elem = (Element) liste.getItemAtPosition(position);
                 int PLACE_PICKER_REQUEST = 1;
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-//                LatLng northEast = new LatLng(elem.getLat()+0.001, elem.getLng()-0.001);
-//                LatLng southWest = new LatLng(elem.getLat()-0.001, elem.getLng()+0.001);
-                LatLng northEast = new LatLng(elem.getLat(), elem.getLng());
-                LatLng southWest = new LatLng(elem.getLat(), elem.getLng());
-                builder.setLatLngBounds(new LatLngBounds(northEast, southWest));
+                LatLng latLng = new LatLng(elem.getLat(), elem.getLng());
+                builder.setLatLngBounds(new LatLngBounds(latLng, latLng));
                 try {
                     startActivityForResult(builder.build(getApplicationContext()), PLACE_PICKER_REQUEST);
                 } catch (GooglePlayServicesRepairableException e) {
@@ -80,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         spinnerList.add(5);
         spinnerList.add(10);
         spinnerList.add(50);
-        ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_item, spinnerList);
+        ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, spinnerList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -95,9 +92,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
-
     }
 
     public void searchButtonClick(View v) throws IOException {
@@ -106,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mapButtonClick(View v) throws GooglePlayServicesNotAvailableException, GooglePlayServicesRepairableException {
-        int PLACE_PICKER_REQUEST = 1;
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        startActivityForResult(builder.build(getApplicationContext()), PLACE_PICKER_REQUEST);
+        startActivityForResult(builder.build(getApplicationContext()), 1);
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -125,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
         EditText    editText = (EditText) findViewById(R.id.searchBar);
         String result = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00170/Toilettes_publiques_nm_STBL/content";
 
-        if(editText.getText().length() != 0){
+        if(editText.getText().toString().trim().length() != 0){
             Geocoder geocoder = new Geocoder(getApplicationContext());
             List<Address> address;
-            address = geocoder.getFromLocationName(editText.getText().toString(),5);
+            address = geocoder.getFromLocationName(editText.getText().toString().trim(),5);
             if (address == null) {
                 return result;
             }
@@ -143,22 +140,40 @@ public class MainActivity extends AppCompatActivity {
 
     public void doRequest(String _adresseRequest){
         resultList.clear();
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue  queue = Volley.newRequestQueue(this);
         StringRequest stringRequest =
                 new StringRequest(
                         Request.Method.GET,_adresseRequest,
                         new Response.Listener<String>() {
                             public void onResponse(String response) {
                                 try {
+                                    Element    elemTmp;
+                                    EditText   editText = (EditText) findViewById(R.id.searchBar);
                                     JSONObject repObj = (JSONObject) new JSONTokener(response).nextValue();
-                                    JSONArray jsonArray = repObj.optJSONArray("data");
+                                    JSONArray  jsonArray = repObj.optJSONArray("data");
+
                                     for(int i=0; i < jsonArray.length(); i++){
                                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                        if(resultList.size() < (Integer) spinner.getSelectedItem())
-                                        resultList.add(new Element(jsonObject.optString("COMMUNE").toString(),jsonObject.optString("ADRESSE").toString(),jsonObject.optString("_l").toString(), jsonObject.optString("INFOS_HORAIRES").toString()));
+
+                                        if(resultList.size() < (Integer) spinner.getSelectedItem()){
+                                            elemTmp = new Element(jsonObject.optString("COMMUNE").toString(),jsonObject.optString("ADRESSE").toString(),jsonObject.optString("_l").toString(), jsonObject.optString("INFOS_HORAIRES").toString());
+
+                                            if(editText.getText().toString().trim().length() != 0){
+                                                Geocoder geocoder = new Geocoder(getApplicationContext());
+                                                List<Address> address;
+                                                address = geocoder.getFromLocationName(editText.getText().toString().trim(),5);
+                                                if (address != null) {
+                                                    Address location = address.get(0);
+                                                    elemTmp.setDistance(location.getLatitude(), location.getLongitude());
+                                                }
+                                            }
+                                            resultList.add(elemTmp);
+                                        }
                                     }
                                 } catch (JSONException je) {
                                     Toast.makeText(getApplicationContext(), je.toString(), Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
 
                             }},

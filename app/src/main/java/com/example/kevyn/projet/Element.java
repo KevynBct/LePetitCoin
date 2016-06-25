@@ -1,5 +1,17 @@
 package com.example.kevyn.projet;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.List;
+
 /**
  * Created by kevyn on 21/06/16.
  */
@@ -9,12 +21,14 @@ public class Element {
     private Double lat;
     private Double lng;
     private String horaires;
+    private Float  distance;
 
     public Element(String _commune, String _adresse, String _position, String _horaires){
         this.commune = _commune;
         this.adresse = _adresse;
         this.toLngLat(_position);
         this.horaires = _horaires;
+        this.distance = Float.parseFloat("0");
     }
 
     public String getCommune(){
@@ -42,6 +56,23 @@ public class Element {
 
         this.lat = Double.parseDouble(tab[0]);
         this.lng = Double.parseDouble(tab[1]);
+    }
+
+    public void setDistance(Double _lat, Double _lng) throws IOException {
+        Location crntLocation = new Location("crntlocation");
+        Location newLocation = new Location("newlocation");
+
+        crntLocation.setLatitude(_lat);
+        crntLocation.setLongitude(_lng);
+
+        newLocation.setLatitude(this.lat);
+        newLocation.setLongitude(this.lng);
+
+        this.distance = crntLocation.distanceTo(newLocation);
+    }
+
+    public Float getDistance(){
+        return  this.distance;
     }
 
     public String toString(){

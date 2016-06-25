@@ -104,6 +104,10 @@
         "source": "/home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/layout/abc_screen_toolbar.xml"
     },
     {
+        "merged": "/home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/res/merged/debug/layout/splash.xml",
+        "source": "/home/kevyn/AndroidStudioProjects/Projet/app/src/main/res/layout/splash.xml"
+    },
+    {
         "merged": "/home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_material.xml",
         "source": "/home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/layout/abc_alert_dialog_material.xml"
     },
