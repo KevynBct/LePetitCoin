@@ -22,7 +22,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private AdapterElement adapter;
     private ListView list;
     private Spinner spinner;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +102,13 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .build();
+        mGoogleApiClient.connect();
     }
 
     public void searchButtonClick(View v) throws IOException {
@@ -103,8 +117,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mapButtonClick(View v) throws GooglePlayServicesNotAvailableException, GooglePlayServicesRepairableException {
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        startActivityForResult(builder.build(getApplicationContext()), 1);
+//        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//        startActivityForResult(builder.build(getApplicationContext()), 1);
+        this.getCurrentLocation();
 
     }
 
@@ -120,12 +135,12 @@ public class MainActivity extends AppCompatActivity {
 
     public String createAdresseRequest() throws IOException {
         EditText    editText = (EditText) findViewById(R.id.searchBar);
+        String text = editText.getText().toString().trim();
         String result = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00170/Toilettes_publiques_nm_STBL/content";
 
-        if(editText.getText().toString().trim().length() != 0){
+        if(text.length() != 0){
             Geocoder geocoder = new Geocoder(getApplicationContext());
-            List<Address> address;
-            address = geocoder.getFromLocationName(editText.getText().toString().trim(),5);
+            List<Address> address = geocoder.getFromLocationName(text, 1);
             if (address == null) {
                 return result;
             }
@@ -161,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                                             if(editText.getText().toString().trim().length() != 0){
                                                 Geocoder geocoder = new Geocoder(getApplicationContext());
                                                 List<Address> address;
-                                                address = geocoder.getFromLocationName(editText.getText().toString().trim(),5);
+                                                address = geocoder.getFromLocationName(editText.getText().toString().trim(),1);
                                                 if (address != null) {
                                                     Address location = address.get(0);
                                                     elemTmp.setDistance(location.getLatitude(), location.getLongitude());
@@ -183,5 +198,19 @@ public class MainActivity extends AppCompatActivity {
                             }}
                 ){};
         queue.add(stringRequest);
+    }
+
+    public void getCurrentLocation(){
+        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
+                .getCurrentPlace(mGoogleApiClient, null);
+        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
+            @Override
+            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+                    Toast.makeText(getApplicationContext(), placeLikelihood.getPlace().getName(), Toast.LENGTH_SHORT).show();
+                }
+                likelyPlaces.release();
+            }
+        });
     }
 }

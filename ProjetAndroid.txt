@@ -10,14 +10,5 @@
 - Affichage des toutes les toilettes
 	- addPlace() ?
 
-- Améliorations graphiques
-	- icon GPS 6dp
-	- bleu clair #e1f3f5
-	- bleu foncé #6bc5cd
-
-- splashscreen
-	- http://www.coderefer.com/android-splash-screen-example-tutorial/
-	- http://stackoverflow.com/questions/23932828/splash-screen-with-horizontal-progress-bar
-
 ~ Recharger liste automatiquement
 
