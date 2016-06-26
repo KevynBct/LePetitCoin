@@ -23,12 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -42,17 +37,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private ArrayList<Element> resultList;
     private AdapterElement adapter;
     private ListView list;
     private Spinner spinner;
-    private GoogleApiClient mGoogleApiClient;
+    private boolean firstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        firstTime = true;
 
         // ResultList
         resultList = new ArrayList<Element>();
@@ -91,36 +88,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    doRequest(createAdresseRequest());
+                    if(!firstTime) search();
+                    else firstTime = false;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .build();
-        mGoogleApiClient.connect();
     }
+
 
     public void searchButtonClick(View v) throws IOException {
-        this.doRequest(createAdresseRequest());
-        adapter.notifyDataSetChanged();
+        search();
     }
 
-    public void mapButtonClick(View v) throws GooglePlayServicesNotAvailableException, GooglePlayServicesRepairableException {
-//        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-//        startActivityForResult(builder.build(getApplicationContext()), 1);
-        this.getCurrentLocation();
+    public void search() throws IOException {
+        EditText editText = (EditText) findViewById(R.id.searchBar);
+        String text = editText.getText().toString().trim();
 
+        if(text.length() != 0){
+            doRequest(createAdresseRequest(text));
+        }else {
+            Toast.makeText(getApplicationContext(), "Veuillez saisir une adresse", Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -133,21 +127,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String createAdresseRequest() throws IOException {
-        EditText    editText = (EditText) findViewById(R.id.searchBar);
-        String text = editText.getText().toString().trim();
+    public String createAdresseRequest(String _address) throws IOException {
         String result = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00170/Toilettes_publiques_nm_STBL/content";
+        Geocoder geocoder = new Geocoder(getApplicationContext());
+        List<Address> address = geocoder.getFromLocationName(_address, 1);
 
-        if(text.length() != 0){
-            Geocoder geocoder = new Geocoder(getApplicationContext());
-            List<Address> address = geocoder.getFromLocationName(text, 1);
-            if (address == null) {
-                return result;
-            }
-            Address location = address.get(0);
-            result += "?filter={\"_l\":{\"$near\":["+Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude())+"]}}";
+        if (address == null) {
+            return result;
         }
-
+        Address location = address.get(0);
+        result += "?filter={\"_l\":{\"$near\":["+Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude())+"]}}";
 
         return result;
     }
@@ -198,19 +187,6 @@ public class MainActivity extends AppCompatActivity {
                             }}
                 ){};
         queue.add(stringRequest);
-    }
-
-    public void getCurrentLocation(){
-        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
-                .getCurrentPlace(mGoogleApiClient, null);
-        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-            @Override
-            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                    Toast.makeText(getApplicationContext(), placeLikelihood.getPlace().getName(), Toast.LENGTH_SHORT).show();
-                }
-                likelyPlaces.release();
-            }
-        });
+        adapter.notifyDataSetChanged();
     }
 }
