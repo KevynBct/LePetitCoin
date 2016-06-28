@@ -2178,7 +2178,7 @@ containing a value of this type.
         public static final int listMode=0x7f0d000a;
         public static final int list_item=0x7f0d0045;
         public static final int logo_only=0x7f0d0037;
-        public static final int mapButton=0x7f0d006d;
+        public static final int mapButton=0x7f0d006e;
         public static final int match_parent=0x7f0d0030;
         public static final int media_actions=0x7f0d0087;
         public static final int media_route_control_frame=0x7f0d0079;
@@ -2205,7 +2205,7 @@ containing a value of this type.
         public static final int scrollIndicatorDown=0x7f0d0052;
         public static final int scrollIndicatorUp=0x7f0d004f;
         public static final int scrollView=0x7f0d0050;
-        public static final int searchBar=0x7f0d006f;
+        public static final int searchBar=0x7f0d006d;
         public static final int search_badge=0x7f0d0062;
         public static final int search_bar=0x7f0d0061;
         public static final int search_button=0x7f0d0063;
@@ -2225,7 +2225,7 @@ containing a value of this type.
         public static final int showTitle=0x7f0d0012;
         public static final int slide=0x7f0d001a;
         public static final int spacer=0x7f0d0049;
-        public static final int spinner=0x7f0d006e;
+        public static final int spinner=0x7f0d006f;
         public static final int split_action_bar=0x7f0d0008;
         public static final int src_atop=0x7f0d0017;
         public static final int src_in=0x7f0d0018;

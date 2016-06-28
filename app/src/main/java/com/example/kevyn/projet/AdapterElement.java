@@ -28,7 +28,7 @@ public class AdapterElement extends ArrayAdapter<Element>{
         Element e = getItem(_position);
 
         // Image
-        TextDrawable drawable = TextDrawable.builder().buildRound(" ", this.getColor(e.getDistance()));
+        TextDrawable drawable = TextDrawable.builder().buildRound("", this.getColor(e.getDistance()));
         ImageView image = (ImageView)row.findViewById(R.id.imageElem);
         image.setImageDrawable(drawable);
 
