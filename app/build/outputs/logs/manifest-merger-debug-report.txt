@@ -189,7 +189,7 @@ ADDED from /home/kevyn/AndroidStudioProjects/Projet/app/src/main/AndroidManifest
 activity#com.example.kevyn.projet.MainActivity
 ADDED from /home/kevyn/AndroidStudioProjects/Projet/app/src/main/AndroidManifest.xml:25:9-28:20
 	android:label
-		ADDED from /home/kevyn/AndroidStudioProjects/Projet/app/src/main/AndroidManifest.xml:27:13-35
+		ADDED from /home/kevyn/AndroidStudioProjects/Projet/app/src/main/AndroidManifest.xml:27:13-41
 	android:name
 		ADDED from /home/kevyn/AndroidStudioProjects/Projet/app/src/main/AndroidManifest.xml:26:13-41
 meta-data#com.google.android.geo.API_KEY

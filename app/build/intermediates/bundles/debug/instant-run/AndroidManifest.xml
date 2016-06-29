@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name="com.example.kevyn.projet.MainActivity"
-            android:label="Search" >
+            android:label="@string/home" >
         </activity>
 
         <meta-data

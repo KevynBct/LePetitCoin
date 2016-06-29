@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class AdapterElement extends ArrayAdapter<Element>{
@@ -27,10 +29,11 @@ public class AdapterElement extends ArrayAdapter<Element>{
         row = inflater.inflate(R.layout.liste_element, null);
         Element e = getItem(_position);
 
-        // Image
-        TextDrawable drawable = TextDrawable.builder().buildRound("", this.getColor(e.getDistance()));
-        ImageView image = (ImageView)row.findViewById(R.id.imageElem);
-        image.setImageDrawable(drawable);
+        // Distance
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+        TextView distance = (TextView) row.findViewById(R.id.textDistance);
+        distance.setText(df.format(e.getDistance()/1000)+"km");
 
         // Adresse
         TextView adresse = (TextView)row.findViewById(R.id.adresseElem);

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="address"> Address</string>
+    <string name="app_name">LePetitCoin</string>
+    <string name="error">Please enter an address</string>
+    <string name="home">Home</string>
+</resources>

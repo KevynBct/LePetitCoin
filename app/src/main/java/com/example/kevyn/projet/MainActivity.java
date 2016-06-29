@@ -1,12 +1,13 @@
 package com.example.kevyn.projet;
 
-import android.content.Intent;
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -22,8 +23,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity{
         ArrayList<Integer> spinnerList = new ArrayList<Integer>();
         spinnerList.add(5);
         spinnerList.add(10);
-        spinnerList.add(50);
+        spinnerList.add(25);
         ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, spinnerList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
@@ -111,23 +110,19 @@ public class MainActivity extends AppCompatActivity{
         String text = editText.getText().toString().trim();
 
         if(text.length() != 0){
-            doRequest(createAdresseRequest(text));
+            doRequest(createAddressRequest(text));
         }else {
-            Toast.makeText(getApplicationContext(), "Veuillez saisir une adresse", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_SHORT).show();
+        }
+        list.setAdapter(adapter);
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    public String createAdresseRequest(String _address) throws IOException {
+    public String createAddressRequest(String _address) throws IOException {
         String result = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00170/Toilettes_publiques_nm_STBL/content";
         Geocoder geocoder = new Geocoder(getApplicationContext());
         List<Address> address = geocoder.getFromLocationName(_address, 1);
@@ -142,12 +137,12 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    public void doRequest(String _adresseRequest){
+    public void doRequest(String _addressRequest){
         resultList.clear();
         RequestQueue  queue = Volley.newRequestQueue(this);
         StringRequest stringRequest =
                 new StringRequest(
-                        Request.Method.GET,_adresseRequest,
+                        Request.Method.GET,_addressRequest,
                         new Response.Listener<String>() {
                             public void onResponse(String response) {
                                 try {
@@ -172,6 +167,7 @@ public class MainActivity extends AppCompatActivity{
                                                 }
                                             }
                                             resultList.add(elemTmp);
+                                            adapter.notifyDataSetChanged();
                                         }
                                     }
                                 } catch (JSONException je) {
@@ -187,6 +183,5 @@ public class MainActivity extends AppCompatActivity{
                             }}
                 ){};
         queue.add(stringRequest);
-        adapter.notifyDataSetChanged();
     }
 }
