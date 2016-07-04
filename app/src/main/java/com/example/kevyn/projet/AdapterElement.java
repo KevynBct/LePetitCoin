@@ -1,16 +1,11 @@
 package com.example.kevyn.projet;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -25,7 +20,6 @@ public class AdapterElement extends ArrayAdapter<Element>{
     public View getView(int _position, View _convertView, ViewGroup _parent){
         View row;
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        ColorGenerator generator = ColorGenerator.MATERIAL;
         row = inflater.inflate(R.layout.liste_element, null);
         Element e = getItem(_position);
 
@@ -48,17 +42,5 @@ public class AdapterElement extends ArrayAdapter<Element>{
         horaires.setText(e.getHoraires());
 
         return row;
-    }
-
-    public int getColor(Float _distance){
-        int color = Color.parseColor("#EF5350");
-
-        if(_distance < 700){
-            color = Color.parseColor("#66BB6A");
-        }else if(_distance >= 700 && _distance < 1000){
-            color = Color.parseColor("#FFEE58");
-        }
-
-        return color;
     }
 }

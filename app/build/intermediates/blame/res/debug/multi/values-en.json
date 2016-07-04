@@ -11,7 +11,14 @@
                     "endOffset": 95
                 },
                 "from": {
-                    "file": "/home/kevyn/AndroidStudioProjects/Projet/app/src/main/res/values-en/strings.xml"
+                    "file": "/home/kevyn/AndroidStudioProjects/Projet/app/src/main/res/values-en/strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 104,
+                        "endColumn": 44,
+                        "endOffset": 144
+                    }
                 }
             },
             {
@@ -42,7 +49,14 @@
                     "endOffset": 202
                 },
                 "from": {
-                    "file": "/home/kevyn/AndroidStudioProjects/Projet/app/src/main/res/values-en/strings.xml"
+                    "file": "/home/kevyn/AndroidStudioProjects/Projet/app/src/main/res/values-en/strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 149,
+                        "endColumn": 57,
+                        "endOffset": 202
+                    }
                 }
             },
             {
@@ -54,7 +68,14 @@
                     "endOffset": 240
                 },
                 "from": {
-                    "file": "/home/kevyn/AndroidStudioProjects/Projet/app/src/main/res/values-en/strings.xml"
+                    "file": "/home/kevyn/AndroidStudioProjects/Projet/app/src/main/res/values-en/strings.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 207,
+                        "endColumn": 37,
+                        "endOffset": 240
+                    }
                 }
             }
         ]

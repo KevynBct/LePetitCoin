@@ -127,9 +127,8 @@ public class MainActivity extends AppCompatActivity{
         Geocoder geocoder = new Geocoder(getApplicationContext());
         List<Address> address = geocoder.getFromLocationName(_address, 1);
 
-        if (address == null) {
-            return result;
-        }
+        if (address == null) return result;
+
         Address location = address.get(0);
         result += "?filter={\"_l\":{\"$near\":["+Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude())+"]}}";
 

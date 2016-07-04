@@ -1,16 +1,8 @@
 package com.example.kevyn.projet;
 
-import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by kevyn on 21/06/16.

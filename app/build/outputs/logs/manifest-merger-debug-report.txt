@@ -159,7 +159,6 @@ MERGED from [com.android.support:support-v4:23.4.0] /home/kevyn/AndroidStudioPro
 MERGED from [com.google.android.gms:play-services-wearable:8.1.0] /home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/8.1.0/AndroidManifest.xml:19:5-20
 MERGED from [com.google.android.gms:play-services-basement:8.1.0] /home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/AndroidManifest.xml:20:5-24:19
 MERGED from [com.android.support:support-v4:23.4.0] /home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/AndroidManifest.xml:22:5-20
-MERGED from [com.amulyakhare:com.amulyakhare.textdrawable:1.0.1] /home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.amulyakhare/com.amulyakhare.textdrawable/1.0.1/AndroidManifest.xml:12:5-20
 	android:supportsRtl
 		ADDED from /home/kevyn/AndroidStudioProjects/Projet/app/src/main/AndroidManifest.xml:13:9-35
 	android:label
@@ -386,7 +385,6 @@ MERGED from [com.google.android.gms:play-services-wearable:8.1.0] /home/kevyn/An
 MERGED from [com.google.android.gms:play-services-base:8.1.0] /home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.1.0/AndroidManifest.xml:18:5-42
 MERGED from [com.google.android.gms:play-services-basement:8.1.0] /home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/AndroidManifest.xml:18:5-42
 MERGED from [com.android.support:support-v4:23.4.0] /home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/AndroidManifest.xml:20:5-43
-MERGED from [com.amulyakhare:com.amulyakhare.textdrawable:1.0.1] /home/kevyn/AndroidStudioProjects/Projet/app/build/intermediates/exploded-aar/com.amulyakhare/com.amulyakhare.textdrawable/1.0.1/AndroidManifest.xml:8:5-10:41
 	android:targetSdkVersion
 		INJECTED from /home/kevyn/AndroidStudioProjects/Projet/app/src/main/AndroidManifest.xml
 		INJECTED from /home/kevyn/AndroidStudioProjects/Projet/app/src/main/AndroidManifest.xml
